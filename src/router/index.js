@@ -1,15 +1,14 @@
-import Vue from 'vue'
-import Router from 'vue-router'
-import HelloWorld from '@/components/HelloWorld'
-
-Vue.use(Router)
-
-export default new Router({
-  routes: [
+import Home from '@/views/home/Home'
+import Rooms from '@/views/rooms/Rooms'
+/* eslint-disable  */
+export default [
     {
       path: '/',
-      name: 'HelloWorld',
-      component: HelloWorld
+      component: Home
+    },
+    {
+      path: '/rooms',
+      name: 'Rooms',
+      component: Rooms
     }
-  ]
-})
+]
