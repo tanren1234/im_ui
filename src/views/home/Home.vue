@@ -2,7 +2,9 @@
     <div>
         <im-header></im-header>
         <search :auto-fixed="false"></search>
-        <chat-cell></chat-cell>
+        <div v-for="item in items">
+            <chat-cell v-bind:item="item"></chat-cell>
+        </div>
     </div>
 </template>
 
@@ -19,7 +21,22 @@
     },
     data () {
       return {
-        msg: 'Hello World!'
+        items: [
+          {
+            avatar: require('@/assets/avater.png'),
+            title: '喜瑞斯1',
+            describe: '周6去哪里踏青啊？',
+            num: 99,
+            time: '12:29'
+          },
+          {
+            avatar: require('@/assets/avater.png'),
+            title: '喜瑞斯2',
+            describe: '周6去哪里踏青啊？',
+            num: 0,
+            time: '12:29'
+          }
+        ]
       }
     }
   }
