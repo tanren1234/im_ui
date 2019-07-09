@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div id="bottom" v-if="this.isShow">
         <tabbar>
             <tabbar-item selected link="/"  badge="2">
                 <img slot="icon" src="@/assets/demo/icon_nav_button.png">
@@ -28,10 +28,22 @@
     components: {
       Tabbar,
       TabbarItem
+    },
+    data () {
+      return {
+        isShow: false
+      }
+    },
+    methods: {
+      setShow () {
+        this.isShow = false
+      }
     }
   }
 </script>
 
-<style scoped>
-
+<style scoped lang="less">
+    #bottom{
+        display: block;
+    }
 </style>
