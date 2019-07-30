@@ -1,11 +1,18 @@
 <template>
-
-        <div id="send-box">
-            <span class="item t1">语音</span>
-            <span class="item t2">输入框</span>
-            <span class="item t3">表情</span>
-            <span class="item t4">发送</span>
+    <div id="send-box">
+        <div id="voice">
+            <button>voice</button>
         </div>
+        <div id="send-input">
+            <input id="m" autocomplete="off" />
+        </div>
+        <div id="emoji">
+            <button>emoji</button>
+        </div>
+        <div id="send-btn">
+            <button>Send</button>
+        </div>
+    </div>
 
 </template>
 <script>
@@ -20,28 +27,27 @@
   }
 </script>
 <style scoped lang="less">
-    #send-box{
+    #send-box {
+        align-items:baseline;
+        background: #000;
+        padding: 3px 0;
+        position: fixed;
         display: flex;
-        background-color: #eee;
-        .item {
-            flex: 1;
+        bottom: 0;
+        width: 100%;
+        input { border: 0;width: 100%; padding: 10px; margin-right: 0.5%; }
+        button {background: rgb(130, 224, 255); border: none; padding: 10px; }
+        #voice {
+            flex:1;
         }
-        .item.t1{
-            flex: 0 0 10%;
-            background-color: blue;
+        #send-input {
+            flex:10;
         }
-        .item.t2{
-            flex: 0 0 70%;
-            background-color: #666;
+        #emoji {
+            flex:1;
         }
-        .item.t3{
-            flex: 0 0 10%;
-            background-color: red;
-        }
-        .item.t4{
-            background-color: #999;
-            flex: 0 0 10%;
+        #send-btn {
+            flex:1;
         }
     }
-
 </style>

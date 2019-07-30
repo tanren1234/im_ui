@@ -1,7 +1,7 @@
 <template>
     <div>
         <im-header v-bind:middleText="headerText"></im-header>
-        <div id="chat-container">
+        <div id="chat-container" ref="chatContainer">
             <div class="chat-content">
                 <div class="chat-msg">
                     <flexbox :gutter="0" style="align-items: flex-start">
@@ -79,6 +79,16 @@
       Flexbox,
       FlexboxItem,
       ChatSend
+    },
+    mounted () {
+      this.toggleNav()
+      let chatContainer = this.$refs.chatContainer
+      chatContainer.style.height = "600px"
+    },
+    methods: {
+      toggleNav () {
+        this.$store.dispatch('toggleNav')
+      }
     }
   }
 </script>
@@ -87,7 +97,7 @@
     #chat-container {
         background-color: #FFF1F1;
         position:fixed;
-        overflow: auto;
+        overflow-y: scroll;
         top: 46px;
         bottom: 50px;
         width: 100%;

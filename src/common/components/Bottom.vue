@@ -1,5 +1,5 @@
 <template>
-    <div id="bottom" v-if="this.isShow">
+    <div id="bottom" v-if="isShow">
         <tabbar>
             <tabbar-item selected link="/"  badge="2">
                 <img slot="icon" src="@/assets/demo/icon_nav_button.png">
@@ -31,13 +31,14 @@
     },
     data () {
       return {
-        isShow: false
+      }
+    },
+    computed: {
+      isShow () {
+        return this.$store.state.app.isShowBottomNav
       }
     },
     methods: {
-      setShow () {
-        this.isShow = false
-      }
     }
   }
 </script>

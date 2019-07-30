@@ -38,6 +38,14 @@
           }
         ]
       }
+    },
+    mounted () {
+      this.toggleNav()
+    },
+    methods: {
+      toggleNav () {
+        this.$store.dispatch('toggleNavInit')
+      }
     }
   }
 </script>
