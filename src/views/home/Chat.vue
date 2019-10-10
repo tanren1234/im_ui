@@ -1,89 +1,119 @@
 <template>
     <div>
-        <im-header v-bind:middleText="headerText"></im-header>
-        <div id="chat-container" ref="chatContainer">
+        <im-header-chat v-bind:middleText="headerText"></im-header-chat>
+        <div id="chat-container">
             <div class="chat-content">
-                <div class="chat-msg">
-                    <flexbox :gutter="0" style="align-items: flex-start">
-                        <flexbox-item :span="2" style="margin-top: 10px !important;">
-                            <div class="media-avatar">
-                                    <img v-bind:src="avatar" alt="">
+                <ul class="chat-thread">
+                    <!--群聊且item.dstid=当前msgcontext.dstid
+                    <span v-text="JSON.stringify(msglist)"></span>
+                     -->
+                    <!--单聊且是他发的item.userid=msgcontext.dstid && 发给我的 item.dstid=myid 或者是我item.userid= myid发的,&&发给他的item.dstid= msgcontext.dstid 我发给他的  -->
+                    <li class="chat" :class="item.ismine?'mine':'other'" v-for="item in msglist">
+                        <div class="media-avatar">
+                            <img class="avatar" :src="item.user.avatar" />
+                        </div>
+                        <span ></span>
+                        <div class="content">
+                            <div v-if="item.msg.media==1" v-text="item.msg.content"></div>
+                            <img class="pic" v-if="item.msg.media==4" :src="item.msg.url" />
+                            <div v-if="item.msg.media==3">
+                                <audio :src="item.msg.url" controls="controls" class="audio">
+                                </audio>
                             </div>
-                        </flexbox-item>
-                        <flexbox-item :span="8">
-                            <div class="media-body">
-                                <div class="media-arrow">
-
-                                </div>
-                                <div class="media-left back-color-other">
-                                    <div class="media-title">
-                                        Amy
-                                    </div>
-                                    <div class="media-content">
-                                        在莲花山宫公园。。。。 在莲花山宫公园。。。。 在莲花山宫公园。。。。 在莲花山宫公园。。。。 在莲花山宫公园。。。。 在莲花山宫公园。。。。
-                                    </div>
-                                </div>
-
+                            <div v-if="item.msg.media==2">
+                                <video :src="item.msg.url" controls="controls" class="video">
+                                </video>
                             </div>
-                        </flexbox-item>
-                    </flexbox>
-                </div>
-                <div class="chat-msg">
-                    <flexbox :gutter="0" style="align-items: flex-start">
-                        <flexbox-item :span="2" >
-
-                        </flexbox-item>
-                        <flexbox-item :span="8">
-                            <div class="media-body">
-                                <div class="media-arrow">
-
-                                </div>
-                                <div class="media-right back-color-me">
-                                    <div class="media-title">
-                                        Amy
-                                    </div>
-                                    <div class="media-content " style="text-align: left">
-                                        在莲花山宫公园。。。。 在莲花山宫公园。。。
-                                    </div>
-                                </div>
-
-                            </div>
-                        </flexbox-item>
-                        <flexbox-item :span="2" style="margin-top: 10px !important;">
-                            <div class="media-avatar" >
-                                <img v-bind:src="avatar" alt="">
-                            </div>
-                        </flexbox-item>
-                    </flexbox>
-                </div>
+                        </div>
+                    </li>
+                </ul>
             </div>
-            <chat-send></chat-send>
         </div>
+        <chat-send-v1></chat-send-v1>
     </div>
 </template>
 
 <script>
-  import ImHeader from '@/common/components/ImHeader'
-  import ChatSend from '@/common/components/ChatSend'
+  import ImHeaderChat from '@/common/components/ImHeaderChat'
+  import ChatSendV1 from '@/common/components/ChatSendV1'
   import {Flexbox, FlexboxItem} from 'vux'
   export default {
     name: 'Chat',
     data () {
       return {
         headerText: '嘻嘻和他的朋友们',
-        avatar: require('@/assets/avater.png')
+        avatar: require('@/assets/avater.png'),
+        scroll: 'scroll',
+        msglist: [
+          {
+            user: {
+              avatar: require('@/assets/avater.png')
+            },
+            msg: {
+              media: 1,
+              content: '大声道sad嘻嘻和他的朋友们嘻嘻和他的朋友们嘻嘻和他的朋友们嘻嘻和他的朋友们嘻嘻和他的朋友们嘻嘻和他的朋友们嘻嘻和他的朋友们'
+            },
+            ismine: true
+          },
+          {
+            user: {
+              avatar: require('@/assets/avater.png')
+            },
+            msg: {
+              media: 1,
+              content: '大声道sad'
+            },
+            ismine: false
+          },
+          {
+            user: {
+              avatar: require('@/assets/avater.png')
+            },
+            msg: {
+              media: 2,
+              url: require('@/assets/audio/example.mp4')
+            },
+            ismine: false
+          },
+          {
+            user: {
+              avatar: require('@/assets/avater.png')
+            },
+            msg: {
+              media: 3,
+              url: require('@/assets/audio/horse.ogg')
+            },
+            ismine: false
+          },
+          {
+            user: {
+              avatar: require('@/assets/avater.png')
+            },
+            msg: {
+              media: 4,
+              url: require('@/assets/avater.png')
+            },
+            ismine: false
+          }
+        ]
       }
     },
+    computed: {
+    },
     components: {
-      ImHeader,
+      ImHeaderChat,
       Flexbox,
       FlexboxItem,
-      ChatSend
+      ChatSendV1
     },
     mounted () {
       this.toggleNav()
-      let chatContainer = this.$refs.chatContainer
-      chatContainer.style.height = "600px"
+      setTimeout(() => {
+        const container = this.$el.querySelector('#chat-container')
+        if (container) {
+          container.scrollTop = container.scrollHeight
+        }
+      }, 300)
     },
     methods: {
       toggleNav () {
@@ -95,7 +125,7 @@
 
 <style scoped  lang="less">
     #chat-container {
-        background-color: #FFF1F1;
+        background-color: #F5F5F5;
         position:fixed;
         overflow-y: scroll;
         top: 46px;
@@ -104,66 +134,77 @@
         .chat-content {
             width: 100%;
             height: 100%;
-            .chat-msg {
-                padding: 5px 5px;
+            .chat-thread {
+                padding-top: 5px;
+            }
+
+            li.chat {
+                justify-content: flex-start;
+                align-items: flex-start;
+                display: flex;
                 .media-avatar {
-                    margin: 0 auto;
-                    width: 40px;
-                    height: 40px;
-                    border-radius: 50%;
                     overflow: hidden;
-                    img {
-                        width: 100%;
-                        height: 100%;
-                    }
-                }
-                .media-body {
-                    position: relative;
-                    font-size: 12px;
-                    margin: 10px 5px;
-                    .media-left {
-                         padding: 3px 12px;
-                         text-align: left;
-                         border-radius: 20px 5px 20px 5px;
-                     }
-                    .media-left:after {
-                        content: "";
-                        position: absolute;
-                        border-style: solid;
-                        border-color: #FFFFFF transparent transparent;
-                        border-width: 15px 0 0 15px;
-                        left: -14px;
-                        top: 20px;
-                    }
-                    .media-right {
-                        padding: 3px 12px;
-                        color: #fff;
-                        text-align: right;
-                        background-color: #FF6B6D;
-                        border-radius: 5px 20px 5px 20px;
-                    }
-                    .media-right:after {
-                        content: "";
-                        position: absolute;
-                        border-style: solid;
-                        border-color: #FF6B6D transparent transparent;
-                        border-width: 15px 15px 0 15px;
-                        right: -14px;
-                        top: 20px;
-                    }
-                    .media-content {
-                        padding: 2px 0 2px 0;
+                    img{
+                        width: 40px;
+                        height:40px;
+                        border-radius: 50%;
                     }
                 }
             }
-        }
-        .back-color-me {
-            background-color:  #FF6B6D;
-            color: #FFFFFF;
-        }
-        .back-color-other {
-            background-color: #ffffff;
-            color: #1C1C1C;
+            li.other{
+                flex-direction: row;
+                .avatar{
+                    margin-left:10px;
+                }
+                span{
+                    border: 10px solid;
+                    border-color: transparent #FFFFFF transparent transparent ;
+                    margin-top: 10px;
+                }
+                .content{
+                    background-color: #FFFFFF;
+                    color: #1C1C1C;
+                }
+            }
+            li.mine{
+                flex-direction: row-reverse;
+                .avatar{
+                    margin-right:10px;
+                }
+                span{
+                    border: 10px solid;
+                    border-color: transparent  transparent transparent #32CD32;
+                    margin-top: 10px;
+                }
+                .content{
+                    background-color: #32CD32;
+                    color: #FFFFFF;
+                }
+            }
+            .content{
+                min-width: 60px;
+                clear: both;
+                display: inline-block;
+                padding: 12px 12px 12px 8px;
+                margin: 0 0 20px 0;
+                font: 14px/16px 'Noto Sans', sans-serif;
+                border-radius: 10px;
+                max-width: 60%;
+                letter-spacing:1px;
+                line-height:18px;
+                .pic{
+                    width: 100%;
+                    margin:3px;
+                }
+                .video {
+                    width: 100%;
+                    margin:3px;
+                }
+                .audio{
+                    max-width: 100%;
+                    margin:3px;
+                }
+            }
         }
     }
 </style>

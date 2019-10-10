@@ -1,16 +1,16 @@
 <template>
     <div id="send-box">
         <div id="voice">
-            <button>voice</button>
+            <button class="bottom-cell-send">voice</button>
         </div>
         <div id="send-input">
-            <input id="m" autocomplete="off" />
+            <input class="bottom-cell-send" id="m" autocomplete="off" />
         </div>
         <div id="emoji">
-            <button>emoji</button>
+            <button class="bottom-cell-send">emoji</button>
         </div>
         <div id="send-btn">
-            <button>Send</button>
+            <button class="bottom-cell-send">Send</button>
         </div>
     </div>
 
@@ -30,7 +30,7 @@
     #send-box {
         align-items:baseline;
         background: #000;
-        padding: 3px 0;
+        // padding: 3px 0;
         position: fixed;
         display: flex;
         bottom: 0;
@@ -48,6 +48,9 @@
         }
         #send-btn {
             flex:1;
+        }
+        .bottom-cell-send {
+            width: 100%;
         }
     }
 </style>

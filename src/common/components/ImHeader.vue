@@ -1,18 +1,32 @@
 <template>
     <div>
-        <x-header :right-options="{showMore: true}" @on-click-more="showMenus = true">{{ middleText }}</x-header>
+        <x-header :left-options="{backText: backText}" :right-options="{showMore: true}" @on-click-more="showMenus = true">
+            {{ middleText }}
+        </x-header>
+        <div v-transfer-dom>
+            <actionsheet :menus="menus" v-model="showMenus" show-cancel></actionsheet>
+        </div>
     </div>
 </template>
 
 <script>
-  import { XHeader } from 'vux'
+  import { XHeader, Actionsheet, TransferDom } from 'vux'
   export default {
+    directives: {
+      TransferDom
+    },
     name: 'ImHeader',
     props: {
       middleText: {
         type: String,
         default: function () {
           return '所有会话'
+        }
+      },
+      backText: {
+        type: String,
+        default: function () {
+          return '返回'
         }
       }
     },
@@ -22,12 +36,14 @@
           menu1: 'Take Photo',
           menu2: 'Choose from photos'
         },
-        showMenus: false,
-        middleText: this.middleText
+        showMenus: false
       }
     },
     components: {
-      XHeader
+      XHeader,
+      Actionsheet
+    },
+    methods: {
     }
   }
 </script>
