@@ -1,21 +1,21 @@
 <template>
     <div>
-        <div class="chat-cell vux-1px-b" @click="goChat()">
+        <div class="chat-cell vux-1px-b" @click="goChat(currentValue.id,currentValue)">
             <flexbox :gutter="0">
                 <flexbox-item :span="2">
                     <div class="chat-left">
                         <div class="chat-left-img">
-                            <img v-bind:src="currentValue.avatar" alt="">
+                            <img v-bind:src="currentValue.users.avatar || defalultAvatar" alt="">
                         </div>
                     </div>
                 </flexbox-item>
                 <flexbox-item :span="8">
                     <div class="chat-content">
                         <p class="chat-content-title">
-                            {{ currentValue.title }}
+                            {{ currentValue.type===1 ? currentValue.users.name : currentValue.groups.name }}
                         </p>
                         <p class="chat-content-describe">
-                            {{ currentValue.describe }}
+                            {{ (currentValue.type===1 ? '' : currentValue.last_message.sender.name + ':') + currentValue.last_message.content }}
                         </p>
                     </div>
                 </flexbox-item>
@@ -54,14 +54,24 @@
         required: false
       }
     },
+    computed: {
+      currentValue () {
+        return this.item
+      }
+    },
     data () {
       return {
-        currentValue: this.item
+        defalultAvatar: require('@/assets/avater.png')
       }
     },
     methods: {
-      goChat () {
-        this.$router.push({ name: 'chat' })
+      goChat (conversationId, params) {
+        this.$store.dispatch({
+          type: 'targetConversation',
+          conversationType: params.type,
+          userGroupId: params.type === 1 ? params.users.id : params.groups.id
+        })
+        this.$router.push({name: 'chat', params: {conversationId: conversationId}})
       }
     },
     components: {

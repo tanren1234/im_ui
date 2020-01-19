@@ -8,20 +8,20 @@
                     <span v-text="JSON.stringify(msglist)"></span>
                      -->
                     <!--单聊且是他发的item.userid=msgcontext.dstid && 发给我的 item.dstid=myid 或者是我item.userid= myid发的,&&发给他的item.dstid= msgcontext.dstid 我发给他的  -->
-                    <li class="chat" :class="item.ismine?'mine':'other'" v-for="item in msglist">
+                    <li class="chat" :class="item.ismine?'mine':'other'" v-for="item in finalMessageList" :key="item.id">
                         <div class="media-avatar">
-                            <img class="avatar" :src="item.user.avatar" />
+                            <img class="avatar" :src="item.sender.avatar || require('@/assets/avater.png')" />
                         </div>
                         <span ></span>
                         <div class="content">
-                            <div v-if="item.msg.media==1" v-text="item.msg.content"></div>
-                            <img class="pic" v-if="item.msg.media==4" :src="item.msg.url" />
-                            <div v-if="item.msg.media==3">
-                                <audio :src="item.msg.url" controls="controls" class="audio">
+                            <div v-if="item.type=='text'" v-text="item.content"></div>
+                            <img class="pic" v-if="item.type=='image'" :src="item.url" />
+                            <div v-if="item.type=='voice'">
+                                <audio :src="item.url" controls="controls" class="audio">
                                 </audio>
                             </div>
-                            <div v-if="item.msg.media==2">
-                                <video :src="item.msg.url" controls="controls" class="video">
+                            <div v-if="item.type=='video'">
+                                <video :src="item.url" controls="controls" class="video">
                                 </video>
                             </div>
                         </div>
@@ -29,7 +29,7 @@
                 </ul>
             </div>
         </div>
-        <chat-send-v1></chat-send-v1>
+        <chat-send-v1 v-on:ListenScorll="initScroll"></chat-send-v1>
     </div>
 </template>
 
@@ -37,6 +37,7 @@
   import ImHeaderChat from '@/common/components/ImHeaderChat'
   import ChatSendV1 from '@/common/components/ChatSendV1'
   import {Flexbox, FlexboxItem} from 'vux'
+  import { messageLists } from '@/api/message'
   export default {
     name: 'Chat',
     data () {
@@ -46,59 +47,40 @@
         scroll: 'scroll',
         msglist: [
           {
-            user: {
+            sender: {
               avatar: require('@/assets/avater.png')
             },
-            msg: {
-              media: 1,
-              content: '大声道sad嘻嘻和他的朋友们嘻嘻和他的朋友们嘻嘻和他的朋友们嘻嘻和他的朋友们嘻嘻和他的朋友们嘻嘻和他的朋友们嘻嘻和他的朋友们'
-            },
+            type: 'text',
+            conversation_id: 1,
+            user_id: 2,
+            content: '大声道sad嘻嘻和他的朋友们嘻嘻和他的朋友们嘻嘻和他的朋友们嘻嘻和他的朋友们嘻嘻和他的朋友们嘻嘻和他的朋友们嘻嘻和他的朋友们',
             ismine: true
-          },
-          {
-            user: {
-              avatar: require('@/assets/avater.png')
-            },
-            msg: {
-              media: 1,
-              content: '大声道sad'
-            },
-            ismine: false
-          },
-          {
-            user: {
-              avatar: require('@/assets/avater.png')
-            },
-            msg: {
-              media: 2,
-              url: require('@/assets/audio/example.mp4')
-            },
-            ismine: false
-          },
-          {
-            user: {
-              avatar: require('@/assets/avater.png')
-            },
-            msg: {
-              media: 3,
-              url: require('@/assets/audio/horse.ogg')
-            },
-            ismine: false
-          },
-          {
-            user: {
-              avatar: require('@/assets/avater.png')
-            },
-            msg: {
-              media: 4,
-              url: require('@/assets/avater.png')
-            },
-            ismine: false
           }
-        ]
+        ],
+        item: {
+          sender: {
+            avatar: require('@/assets/avater.png')
+          },
+          type: 'text',
+          conversation_id: 1,
+          user_id: 2,
+          content: '大声道' + new Date().getTime(),
+          ismine: true
+        }
       }
     },
     computed: {
+      finalMessageList: function () {
+        const newMessage = this.$store.getters.getNewMessage
+        if (newMessage) {
+          if (newMessage.conversation_id === this.$route.params.conversationId) {
+            this.msglist.push(newMessage)
+            // 接收到新消息滚动
+            this.initScroll()
+          }
+        }
+        return this.msglist
+      }
     },
     components: {
       ImHeaderChat,
@@ -108,16 +90,35 @@
     },
     mounted () {
       this.toggleNav()
-      setTimeout(() => {
-        const container = this.$el.querySelector('#chat-container')
-        if (container) {
-          container.scrollTop = container.scrollHeight
-        }
-      }, 300)
+      // 获取消息列表
+      this.messageLists()
+      // this.initScroll()
     },
     methods: {
       toggleNav () {
         this.$store.dispatch('toggleNav')
+      },
+      initScroll () {
+        setTimeout(() => {
+          const container = this.$el.querySelector('#chat-container')
+          if (container) {
+            console.log(container.scrollHeight)
+            container.scrollTop = container.scrollHeight
+          }
+        }, 1000)
+      },
+      messageLists () {
+        const conversationId = this.$route.params.conversationId
+        messageLists(conversationId).then(response => {
+          if (response.data.code === 200) {
+            this.msglist = response.data.data.data
+            this.initScroll()
+          } else {
+            console.log(response.data.msg)
+          }
+        }).catch(error => {
+          console.log(error)
+        })
       }
     }
   }

@@ -1,16 +1,15 @@
 <template>
   <div id="app">
     <router-view></router-view>
-    <bottom></bottom>
   </div>
 </template>
 
 <script>
-  import Bottom from '@/common/components/Bottom'
   export default {
     name: 'app',
-    components: {
-      Bottom
+    data () {
+      return {
+      }
     }
   }
 </script>

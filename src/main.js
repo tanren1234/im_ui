@@ -13,6 +13,19 @@ const router = new VueRouter({
   routes
 })
 
+router.beforeEach((to, from, next) => {
+  if (to.path === '/login') {
+    next()
+  } else {
+    let token = store.getters.token
+    if (!token || token === '') {
+      next('/login')
+    } else {
+      next()
+    }
+  }
+})
+
 FastClick.attach(document.body)
 
 Vue.config.productionTip = false
