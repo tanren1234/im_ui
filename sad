@@ -1,0 +1,12 @@
+ navigator.mediaDevices.getUserMedia({
+          audio: true,
+          video: false
+        })
+          .then(function (stream) {
+            /* 使用这个stream stream */
+            console.log(stream)
+          })
+          .catch(function (err) {
+            /* 处理error */
+            console.log(err)
+          })

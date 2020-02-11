@@ -5,27 +5,23 @@
             <flexbox>
                 <flexbox-item :span="3">
                     <div class="flex-demo">
-                        <img  style="display:block;max-width: 100%" :src="addPersonIcon">
+                        <img  style="display:block;max-width: 100%" :src="userInfo.avatar">
                     </div>
                 </flexbox-item>
                 <flexbox-item :span="9">
                     <div class="flex-demo">
-                        <p>Join</p>
-                        <p>手机号：18373873100</p>
+                        <p>{{ userInfo.name }}</p>
+                        <p>手机号：{{ userInfo.phone }}</p>
                     </div>
                 </flexbox-item>
             </flexbox>
         </div>
         <group>
             <cell title="设置" is-link>
-                <div slot="icon" class="add-person-icon">
-                    <img slot="icon" width="20" style="display:block" :src="groupIcon">
-                </div>
+
             </cell>
             <cell title="表情" is-link>
-                <div slot="icon" class="group-icon">
-                    <img slot="icon" width="20" style="display:block" :src="groupIcon">
-                </div>
+
             </cell>
         </group>
     </div>
@@ -34,6 +30,7 @@
 <script>
   import ImHeader from '@/common/components/ImHeader'
   import { Flexbox, FlexboxItem, Group, Cell } from 'vux'
+  import { userInfo } from '@/api/user'
   export default {
     name: 'Me',
     data () {
@@ -41,7 +38,24 @@
         headerText: '个人中心',
         addPersonIcon: require('@/assets/avater.png'),
         groupIcon: require('@/assets/ali_icon/icon_group.png'),
-        searchValue: ''
+        searchValue: '',
+        userInfo: {}
+      }
+    },
+    mounted () {
+      this.getUserInfo()
+    },
+    methods: {
+      getUserInfo () {
+        userInfo().then(res => {
+          if (res.data.code === 200) {
+            this.userInfo = res.data.data
+          } else {
+            console.log(res.data.msg)
+          }
+        }).catch(err => {
+          console.log(err)
+        })
       }
     },
     components: {
@@ -55,5 +69,7 @@
 </script>
 
 <style scoped>
-
+    #info {
+        padding: 10px;
+    }
 </style>
