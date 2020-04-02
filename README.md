@@ -2,26 +2,41 @@
 
 > im 前端界面
 
-## Build Setup
+- git clone https://github.com/tanren1234/im_ui.git
 
-``` bash
-# install dependencies
-npm install
+- 下载node.js wget https://npm.taobao.org/mirrors/node/v12.16.1/node-v12.16.1-linux-arm64.tar.xz
 
-# serve with hot reload at localhost:8080
-npm run dev
-
-# build for production with minification
-npm run build
-
-# build for production and view the bundle analyzer report
-npm run build --report
-
-# run unit tests
-npm run unit
-
-# run all tests
-npm test
 ```
 
-For a detailed explanation on how things work, check out the [guide](http://vuejs-templates.github.io/webpack/) and [docs for vue-loader](http://vuejs.github.io/vue-loader).
+cd /usr
+
+mkdir software
+
+cd software
+
+wget https://npm.taobao.org/mirrors/node/v12.16.1/node-v12.16.1-linux-x64.tar.xz
+
+tar xf node-v12.16.1-linux-x64.tar.xz
+
+cd /usr/local
+
+mv /usr/software/node-v12.16.1-linux-x64 .
+
+mv node-v12.16.1-linux-x64/ nodejs
+
+ln -s /usr/local/nodejs/bin/node /usr/local/bin/ 
+ln -s /usr/local/nodejs/bin/npm /usr/local/bin/ 
+
+
+npm install -g cnpm --registry=https://registry.npm.taobao.org
+
+ln -s /usr/local/nodejs/bin/cnpm /usr/local/bin/
+```
+
+
+```
+cnpm install
+
+npm run build
+
+```
