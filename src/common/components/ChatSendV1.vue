@@ -11,7 +11,7 @@
             <div class="item-2" v-if="txtstat=='kbord'">
                 <x-input v-model="txtmsg"  placeholder="I'm placeholder"></x-input>
             </div>
-            <div class="item-2"  v-if="txtstat=='audio'"  @touchstart="gtouchstart()"  @touchend="gtouchend()">
+            <div class="item-2"  v-if="txtstat=='audio'"   @touchstart="gtouchstart()"  @touchend="gtouchend()">
                 <x-button plain >按住 说话</x-button>
             </div>
             <div class="item-3" @click="showPanels('doutu')">
@@ -210,6 +210,8 @@
             console.log(error)
           })
         }
+      },
+      webrtcStart () {
       },
       gtouchstart () {
         window.console.log('1，按下啦啦啦啦啦')

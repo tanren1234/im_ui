@@ -34,8 +34,9 @@
         })
       },
       initWebSocket (token) {
+        let uri = process.env.WEBSOCKET_API
         // 初始化weosocket
-        const wsuri = `ws://127.0.0.1:8088/ws?token=${token}`
+        const wsuri = `ws://${uri}/ws?token=${token}`
         this.websock = new WebSocket(wsuri)
         this.websock.onmessage = this.websocketonmessage
         this.websock.onopen = this.websocketonopen
