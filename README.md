@@ -6,6 +6,8 @@
 
 - 下载node.js wget https://npm.taobao.org/mirrors/node/v12.16.1/node-v12.16.1-linux-arm64.tar.xz
 
+- demo地址：http://39.106.58.190:8089/#/login 18373873100 123456
+- 后台  https://github.com/tanren1234/larachat
 ```
 
 cd /usr
