@@ -8,6 +8,10 @@
 
 - demo地址：http://39.106.58.190:8089/#/login 18373873100 123456
 - 后台  https://github.com/tanren1234/larachat
+
+![avatar](https://raw.githubusercontent.com/tanren1234/im_ui/linux_env/01.jpg)
+![avatar](https://raw.githubusercontent.com/tanren1234/im_ui/linux_env/02.jpg)
+![avatar](https://raw.githubusercontent.com/tanren1234/im_ui/linux_env/03.jpg)
 ```
 
 cd /usr
